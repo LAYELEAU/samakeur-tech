@@ -1,0 +1,457 @@
+<main class="bg-gray-50 min-h-screen">
+  
+  <section class="">
+    <style>
+    @keyframes slide-up {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.8);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.8s ease-out forwards;
+    }
+
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+
+    .float-animation {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .slide {
+        opacity: 0;
+        transition: opacity 0.6s ease-in-out;
+        pointer-events: none;
+    }
+
+    .slide.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .dot {
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background-color: white !important;
+        transform: scale(1.5);
+    }
+</style>
+
+<section #sliderSection class="relative h-[90vh] overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950">
+
+    <!-- Slide 1: Bureaux & Espaces -->
+    <div class="slide active absolute inset-0" data-slide="1">
+        <!-- Background -->
+        <div class="absolute inset-0">
+            <img
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop"
+                alt="Bureaux modernes"
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-blue-800/15 to-blue-900/10"></div>
+        </div>
+
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-cyan-400 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-20 w-80 h-80 bg-blue-400 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-6 w-full">
+                <div class="max-w-3xl">
+                    <div class="opacity-0 animate-slide-up inline-flex items-center gap-2 bg-cyan-500 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                        </span>
+                        Espaces disponibles maintenant
+                    </div>
+                    
+                    <h1 class="opacity-0 animate-slide-up delay-100 text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                        Trouvez votre <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">espace de travail</span> idéal
+                    </h1>
+                    
+                    <p class="opacity-0 animate-slide-up delay-200 text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed">
+                        Bureaux privés, coworking, studios... Découvrez les meilleurs espaces professionnels au Sénégal.
+                    </p>
+
+                    <!-- Stats -->
+                    <div class="opacity-0 animate-slide-up delay-300 grid grid-cols-3 gap-6 mb-10">
+                        <div class="text-center md:text-left">
+                            <div class="text-4xl md:text-5xl font-black text-cyan-400 mb-1">500+</div>
+                            <div class="text-sm text-blue-200 font-medium">Espaces référencés</div>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <div class="text-4xl md:text-5xl font-black text-cyan-400 mb-1">15</div>
+                            <div class="text-sm text-blue-200 font-medium">Villes couvertes</div>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <div class="text-4xl md:text-5xl font-black text-cyan-400 mb-1">98%</div>
+                            <div class="text-sm text-blue-200 font-medium">Satisfaction</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="opacity-0 animate-slide-up delay-400 flex flex-col sm:flex-row gap-4">
+                        <a href="#recherche" class="group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-cyan-500/50 transition-all hover:scale-105 text-center">
+                            <span class="relative z-10">🔍 Rechercher un espace</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </a>
+                        <a href="#contact" class="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all border-2 border-white/30 text-center hover:border-white/50">
+                            💼 Je suis propriétaire
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Card -->
+        <div class="hidden lg:block absolute bottom-20 right-20 float-animation">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-cyan-100">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                        🏢
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-blue-900">+150</div>
+                        <div class="text-sm text-blue-600 font-semibold">Nouveaux espaces</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Logements Premium -->
+    <div class="slide absolute inset-0" data-slide="2">
+        <!-- Background -->
+        <div class="absolute inset-0">
+            <img
+                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&h=1080&fit=crop"
+                alt="Logement premium"
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-bl from-indigo-900/25 via-blue-900/18 to-blue-800/10"></div>
+        </div>
+
+        <!-- Animated Shapes -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-40 right-20 w-72 h-72 bg-indigo-400 rounded-full blur-3xl animate-pulse" style="animation-delay: 0.5s;"></div>
+            <div class="absolute bottom-40 left-20 w-64 h-64 bg-blue-500 rounded-full blur-3xl animate-pulse" style="animation-delay: 1.5s;"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-6 w-full">
+                <div class="max-w-3xl">
+                    <div class="opacity-0 animate-slide-up inline-block bg-indigo-500 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
+                        🏠 Logements Premium
+                    </div>
+                    
+                    <h1 class="opacity-0 animate-slide-up delay-100 text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                        Vivez dans un <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">logement d'exception</span>
+                    </h1>
+                    
+                    <p class="opacity-0 animate-slide-up delay-200 text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed">
+                        Appartements, villas, studios meublés... Trouvez votre prochain chez-vous dans les quartiers les plus recherchés.
+                    </p>
+
+                    <!-- Features -->
+                    <div class="opacity-0 animate-slide-up delay-300 space-y-4 mb-10">
+                        <div class="flex items-center gap-4 text-white">
+                            <div class="w-12 h-12 bg-indigo-500/30 backdrop-blur-sm rounded-xl flex items-center justify-center border-2 border-indigo-400/50">
+                                <svg class="w-6 h-6 text-indigo-300" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold">Visites virtuelles 360° disponibles</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-white">
+                            <div class="w-12 h-12 bg-indigo-500/30 backdrop-blur-sm rounded-xl flex items-center justify-center border-2 border-indigo-400/50">
+                                <svg class="w-6 h-6 text-indigo-300" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold">Réservation en ligne sécurisée</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-white">
+                            <div class="w-12 h-12 bg-indigo-500/30 backdrop-blur-sm rounded-xl flex items-center justify-center border-2 border-indigo-400/50">
+                                <svg class="w-6 h-6 text-indigo-300" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold">Propriétaires vérifiés et certifiés</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="opacity-0 animate-slide-up delay-400 flex flex-col sm:flex-row gap-4">
+                        <a href="#logements" class="group relative overflow-hidden bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/50 transition-all hover:scale-105 text-center">
+                            <span class="relative z-10">🏡 Explorer les logements</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-indigo-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </a>
+                        <a href="#contact" class="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all border-2 border-white/30 text-center hover:border-white/50">
+                            📞 Parler à un conseiller
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Card -->
+        <div class="hidden lg:block absolute bottom-20 right-20 float-animation" style="animation-delay: 0.5s;">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-indigo-100">
+                <div class="text-center">
+                    <div class="text-5xl mb-3">🌟</div>
+                    <div class="text-3xl font-black text-indigo-900">4.8/5</div>
+                    <div class="text-sm text-indigo-600 font-semibold">Note moyenne</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Coworking -->
+    <div class="slide absolute inset-0" data-slide="3">
+        <!-- Background -->
+        <div class="absolute inset-0">
+            <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&h=1080&fit=crop"
+                alt="Espace coworking"
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/22 via-cyan-900/16 to-blue-800/10"></div>
+        </div>
+
+        <!-- Animated Elements -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-32 left-32 w-56 h-56 bg-cyan-500 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-32 right-32 w-72 h-72 bg-blue-500 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-6 w-full">
+                <div class="max-w-3xl">
+                    <div class="opacity-0 animate-slide-up inline-block bg-cyan-500 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
+                        💼 Espaces Coworking
+                    </div>
+                    
+                    <h1 class="opacity-0 animate-slide-up delay-100 text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                        Rejoignez une <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400">communauté dynamique</span>
+                    </h1>
+                    
+                    <p class="opacity-0 animate-slide-up delay-200 text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed">
+                        Travaillez, collaborez et réseautez dans les meilleurs espaces de coworking du Sénégal.
+                    </p>
+
+                    <!-- Impact Stats -->
+                    <div class="opacity-0 animate-slide-up delay-300 grid grid-cols-3 gap-6 mb-10">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border-2 border-cyan-400/30">
+                            <div class="text-3xl md:text-4xl font-black text-cyan-300 mb-1">50+</div>
+                            <div class="text-xs text-blue-200">Espaces coworking</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border-2 border-cyan-400/30">
+                            <div class="text-3xl md:text-4xl font-black text-cyan-300 mb-1">24/7</div>
+                            <div class="text-xs text-blue-200">Accès flexible</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border-2 border-cyan-400/30">
+                            <div class="text-3xl md:text-4xl font-black text-cyan-300 mb-1">WiFi</div>
+                            <div class="text-xs text-blue-200">Très haut débit</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="opacity-0 animate-slide-up delay-400 flex flex-col sm:flex-row gap-4">
+                        <a href="#coworking" class="group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-cyan-500/50 transition-all hover:scale-105 text-center">
+                            <span class="relative z-10">🚀 Découvrir les espaces</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </a>
+                        <a href="#tarifs" class="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all border-2 border-white/30 text-center hover:border-white/50">
+                            💰 Voir les tarifs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Card -->
+        <div class="hidden lg:block absolute bottom-20 right-20 float-animation" style="animation-delay: 1s;">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-cyan-100">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                        ⚡
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-blue-900">1000+</div>
+                        <div class="text-sm text-blue-600 font-semibold">Entrepreneurs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Investissement -->
+    <div class="slide absolute inset-0" data-slide="4">
+        <!-- Background -->
+        <div class="absolute inset-0">
+            <img
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop"
+                alt="Investissement immobilier"
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-tl from-blue-950/28 via-indigo-900/18 to-blue-900/10"></div>
+        </div>
+
+        <!-- Animated Background -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-24 right-24 w-80 h-80 bg-indigo-400 rounded-full blur-3xl animate-pulse" style="animation-delay: 0.3s;"></div>
+            <div class="absolute bottom-24 left-24 w-64 h-64 bg-blue-500 rounded-full blur-3xl animate-pulse" style="animation-delay: 1.2s;"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-6 w-full">
+                <div class="max-w-3xl">
+                    <div class="opacity-0 animate-slide-up inline-block bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
+                        📈 Investissement PropTech
+                    </div>
+                    
+                    <h1 class="opacity-0 animate-slide-up delay-100 text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                        Investissez dans l'<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">immobilier de demain</span>
+                    </h1>
+                    
+                    <p class="opacity-0 animate-slide-up delay-200 text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed">
+                        Maximisez vos rendements avec notre plateforme d'investissement immobilier innovante et sécurisée.
+                    </p>
+
+                    <!-- Services Grid -->
+                    <div class="opacity-0 animate-slide-up delay-300 grid grid-cols-2 gap-4 mb-10">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/20 hover:bg-white/15 transition-all hover:scale-105 cursor-pointer">
+                            <div class="text-3xl mb-2">💎</div>
+                            <div class="font-bold text-white mb-1 text-lg">Biens Premium</div>
+                            <div class="text-xs text-blue-200">Sélection d'élite</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/20 hover:bg-white/15 transition-all hover:scale-105 cursor-pointer">
+                            <div class="text-3xl mb-2">📊</div>
+                            <div class="font-bold text-white mb-1 text-lg">Analyse ROI</div>
+                            <div class="text-xs text-blue-200">Données en temps réel</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/20 hover:bg-white/15 transition-all hover:scale-105 cursor-pointer">
+                            <div class="text-3xl mb-2">🔒</div>
+                            <div class="font-bold text-white mb-1 text-lg">Sécurisé</div>
+                            <div class="text-xs text-blue-200">Transactions protégées</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/20 hover:bg-white/15 transition-all hover:scale-105 cursor-pointer">
+                            <div class="text-3xl mb-2">👥</div>
+                            <div class="font-bold text-white mb-1 text-lg">Accompagnement</div>
+                            <div class="text-xs text-blue-200">Experts dédiés</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="opacity-0 animate-slide-up delay-400 flex flex-col sm:flex-row gap-4">
+                        <a href="#investir" class="group relative overflow-hidden bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/50 transition-all hover:scale-105 text-center">
+                            <span class="relative z-10">💼 Commencer à investir</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-indigo-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </a>
+                        <a href="#simulateur" class="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all border-2 border-white/30 text-center hover:border-white/50">
+                            🧮 Simuler mon investissement
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Card -->
+        <div class="hidden lg:block absolute bottom-20 right-20 float-animation" style="animation-delay: 0.3s;">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-indigo-100">
+                <div class="text-center">
+                    <div class="text-5xl mb-3">💰</div>
+                    <div class="text-3xl font-black bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">+12%</div>
+                    <div class="text-sm text-indigo-600 font-semibold">Rendement moyen</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex items-center gap-6">
+        <!-- Dots -->
+        <div class="flex gap-3 bg-black/20 backdrop-blur-md px-4 py-3 rounded-full border border-white/20">
+            <button (click)="goToSlide(1)" class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/70 transition-all" data-dot="1"></button>
+            <button (click)="goToSlide(2)" class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/70 transition-all" data-dot="2"></button>
+            <button (click)="goToSlide(3)" class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/70 transition-all" data-dot="3"></button>
+            <button (click)="goToSlide(4)" class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/70 transition-all" data-dot="4"></button>
+        </div>
+    </div>
+
+    <!-- Arrow Navigation -->
+    <button (click)="prevSlide()" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all border-2 border-white/30 hover:border-white/50 hover:scale-110 group">
+        <svg class="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    
+    <button (click)="nextSlide()" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all border-2 border-white/30 hover:border-white/50 hover:scale-110 group">
+        <svg class="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Pause/Play Button -->
+    <button (click)="toggleAutoplay()" class="absolute top-6 right-6 z-20 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all border-2 border-white/30 hover:scale-110" id="playPauseBtn">
+        <svg *ngIf="isPlaying" id="pauseIcon" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        <svg *ngIf="!isPlaying" id="playIcon" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+        </svg>
+    </button>
+
+    <!-- Progress Bar -->
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-20">
+        <div id="progressBar" class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300" style="width: 0%"></div>
+    </div>
+</section>
+
+<!-- Slider logic moved to the component TypeScript (home.ts) -->
+   
+  </section>
+
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-gray-800 mb-8 text-center">Logements Récents</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <app-card-logement *ngFor="let logement of logements" [infologement]="logement"></app-card-logement>
+        </div>
+    </section>
+
+</main>
