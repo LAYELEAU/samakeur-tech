@@ -449,9 +449,669 @@
 
     <section class="py-16 px-6 max-w-7xl mx-auto">
         <h2 class="text-3xl font-extrabold text-gray-800 mb-8 text-center">Logements Récents</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        <app-card-logement *ngFor="let logement of logements" [infologement]="logement"></app-card-logement>
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      @for (logement of logements; track logement.id) {
+           <app-card-logement [infologement]="logement"></app-card-logement>
+       } @empty {
+        <div class="text-center p-10 bg-gray-100 rounded-xl">
+         <p class="text-gray-600">Désolé, aucun logement n'est disponible à Dakar pour le moment.</p>
+         </div>
+        }    
         </div>
+    </section>
+
+    <section class="">
+
+     <style>
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes scroll-right {
+        0% {
+            transform: translateX(-50%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes float-up-down {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+
+    @keyframes pulse-scale {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    @keyframes rotate-border {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .scroll-left {
+        animation: scroll-left 40s linear infinite;
+    }
+
+    .scroll-right {
+        animation: scroll-right 40s linear infinite;
+    }
+
+    .float-animation {
+        animation: float-up-down 3s ease-in-out infinite;
+    }
+
+    .pulse-scale {
+        animation: pulse-scale 2s ease-in-out infinite;
+    }
+
+    .shimmer-bg {
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(59, 130, 246, 0.1) 50%,
+            transparent 100%
+        );
+        background-size: 1000px 100%;
+        animation: shimmer 3s infinite;
+    }
+
+    .logo-container:hover {
+        animation-play-state: paused;
+    }
+
+    .rotating-border {
+        animation: rotate-border 8s linear infinite;
+    }
+
+    /* Pause animation on hover */
+    .scroll-container:hover .scroll-left,
+    .scroll-container:hover .scroll-right {
+        animation-play-state: paused;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% 200%;
+        animation: gradient-shift 3s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+</style>
+
+<section class="relative py-20 px-6 bg-gradient-to-br from-blue-50 via-white to-cyan-50 overflow-hidden">
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <!-- Floating Circles -->
+        <div class="absolute top-10 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-3xl float-animation"></div>
+        <div class="absolute top-20 right-20 w-40 h-40 bg-cyan-200/30 rounded-full blur-3xl float-animation" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-1/3 w-36 h-36 bg-indigo-200/30 rounded-full blur-3xl float-animation" style="animation-delay: 2s;"></div>
+        
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+            <!-- Badge animé -->
+            <div class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-2 rounded-full text-sm font-bold mb-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 pulse-scale">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                </span>
+                <span>+200 Partenaires de confiance</span>
+            </div>
+
+            <!-- Title avec effet gradient -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4">
+                <span class="gradient-text">Ils nous font confiance</span>
+            </h2>
+            
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                Des entreprises leaders qui font confiance à notre plateforme pour leurs besoins immobiliers
+            </p>
+
+            <!-- Decorative Line -->
+            <div class="flex items-center justify-center gap-4 mt-8">
+                <div class="h-1 w-20 bg-gradient-to-r from-transparent to-blue-500 rounded-full"></div>
+                <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                <div class="h-1 w-20 bg-gradient-to-l from-transparent to-cyan-500 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- Infinite Scroll Row 1 (Left to Right) -->
+        <div class="scroll-container mb-8 overflow-hidden">
+            <div class="flex scroll-left">
+                <!-- First Set of Logos -->
+                <div class="flex items-center gap-12 pr-12">
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop" alt="Company 1" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-cyan-200">
+                            <img src="https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=200&h=100&fit=crop" alt="Company 2" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-indigo-200">
+                            <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=200&h=100&fit=crop" alt="Company 3" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&h=100&fit=crop" alt="Company 4" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-cyan-200">
+                            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=100&fit=crop" alt="Company 5" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duplicate Set for Seamless Loop -->
+                <div class="flex items-center gap-12 pr-12">
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop" alt="Company 1" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-cyan-200">
+                            <img src="https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=200&h=100&fit=crop" alt="Company 2" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-indigo-200">
+                            <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=200&h=100&fit=crop" alt="Company 3" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&h=100&fit=crop" alt="Company 4" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-cyan-200">
+                            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=100&fit=crop" alt="Company 5" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infinite Scroll Row 2 (Right to Left) -->
+        <div class="scroll-container overflow-hidden">
+            <div class="flex scroll-right">
+                <!-- First Set of Logos -->
+                <div class="flex items-center gap-12 pr-12">
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-purple-200">
+                            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&h=100&fit=crop" alt="Company 6" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-green-200">
+                            <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=200&h=100&fit=crop" alt="Company 7" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-orange-200">
+                            <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=200&h=100&fit=crop" alt="Company 8" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=200&h=100&fit=crop" alt="Company 9" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-pink-200">
+                            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=100&fit=crop" alt="Company 10" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duplicate Set for Seamless Loop -->
+                <div class="flex items-center gap-12 pr-12">
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-purple-200">
+                            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&h=100&fit=crop" alt="Company 6" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-green-200">
+                            <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=200&h=100&fit=crop" alt="Company 7" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-orange-200">
+                            <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=200&h=100&fit=crop" alt="Company 8" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-blue-200">
+                            <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=200&h=100&fit=crop" alt="Company 9" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <div class="logo-container group relative flex-shrink-0">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-gray-100 hover:border-pink-200">
+                            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=100&fit=crop" alt="Company 10" class="h-16 w-32 object-contain grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:scale-105 hover:shadow-xl">
+                <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 mb-2">200+</div>
+                <div class="text-sm text-gray-600 font-semibold">Partenaires</div>
+            </div>
+            <div class="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-indigo-100 hover:border-indigo-300 transition-all hover:scale-105 hover:shadow-xl">
+                <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">98%</div>
+                <div class="text-sm text-gray-600 font-semibold">Satisfaction</div>
+            </div>
+            <div class="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-cyan-100 hover:border-cyan-300 transition-all hover:scale-105 hover:shadow-xl">
+                <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-600 mb-2">15+</div>
+                <div class="text-sm text-gray-600 font-semibold">Années d'expertise</div>
+            </div>
+            <div class="text-center p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-100 hover:border-purple-300 transition-all hover:scale-105 hover:shadow-xl">
+                <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-2">5000+</div>
+                <div class="text-sm text-gray-600 font-semibold">Projets réalisés</div>
+            </div>
+        </div>
+    </div>
+</section>
+    </section>
+
+
+
+    <section>
+        <style>
+    @keyframes float-y {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes float-x {
+        0%, 100% {
+            transform: translateX(0px);
+        }
+        50% {
+            transform: translateX(20px);
+        }
+    }
+
+    @keyframes rotate-slow {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes shimmer-slide {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    @keyframes bounce-slow {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .float-y {
+        animation: float-y 6s ease-in-out infinite;
+    }
+
+    .float-x {
+        animation: float-x 8s ease-in-out infinite;
+    }
+
+    .rotate-slow {
+        animation: rotate-slow 20s linear infinite;
+    }
+
+    .pulse-ring {
+        animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .shimmer-effect {
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer-slide 2s infinite;
+    }
+
+    .bounce-slow {
+        animation: bounce-slow 2s ease-in-out infinite;
+    }
+
+    /* Gradient animated background */
+    @keyframes gradient-animation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #667eea 100%);
+        background-size: 300% 300%;
+        animation: gradient-animation 15s ease infinite;
+    }
+
+    /* Particle effect */
+    @keyframes particle-float {
+        0%, 100% {
+            transform: translateY(0) translateX(0) scale(1);
+            opacity: 0.5;
+        }
+        50% {
+            transform: translateY(-100px) translateX(50px) scale(1.2);
+            opacity: 1;
+        }
+    }
+
+    .particle {
+        animation: particle-float 4s ease-in-out infinite;
+    }
+</style>
+
+<section class="relative py-24 px-6 overflow-hidden">
+    
+    <!-- Animated Gradient Background -->
+    <div class="absolute inset-0 gradient-bg opacity-90"></div>
+    
+    <!-- Overlay Pattern -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30"></div>
+
+    <!-- Floating Decorative Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <!-- Large Circles -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl float-y"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-300/10 rounded-full blur-3xl float-y" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/5 rounded-full blur-3xl float-x"></div>
+
+        <!-- Rotating Rings -->
+        <div class="absolute top-40 right-1/4 w-32 h-32 border-4 border-white/20 rounded-full rotate-slow"></div>
+        <div class="absolute bottom-40 left-1/4 w-24 h-24 border-4 border-cyan-300/30 rounded-full rotate-slow" style="animation-delay: -5s;"></div>
+
+        <!-- Floating Particles -->
+        <div class="particle absolute top-1/4 left-1/4 w-3 h-3 bg-white rounded-full" style="animation-delay: 0s;"></div>
+        <div class="particle absolute top-1/3 right-1/3 w-2 h-2 bg-cyan-300 rounded-full" style="animation-delay: 1s;"></div>
+        <div class="particle absolute bottom-1/3 left-1/3 w-4 h-4 bg-white rounded-full" style="animation-delay: 2s;"></div>
+        <div class="particle absolute top-2/3 right-1/4 w-2 h-2 bg-blue-300 rounded-full" style="animation-delay: 1.5s;"></div>
+
+        <!-- Emoji Decorations -->
+        <div class="absolute top-32 left-20 text-6xl opacity-20 float-y">🚀</div>
+        <div class="absolute top-48 right-32 text-5xl opacity-20 float-y" style="animation-delay: 0.5s;">💼</div>
+        <div class="absolute bottom-32 left-32 text-7xl opacity-20 float-y" style="animation-delay: 1s;">✨</div>
+        <div class="absolute bottom-48 right-24 text-6xl opacity-20 float-y" style="animation-delay: 1.5s;">🎯</div>
+    </div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+        
+        <!-- Main Content -->
+        <div class="text-center">
+            
+            <!-- Badge animé -->
+            <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md border-2 border-white/30 px-6 py-3 rounded-full text-white font-bold mb-8 hover:bg-white/30 transition-all hover:scale-105 shadow-2xl">
+                <span class="relative flex">
+                    <span class="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 pulse-ring"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                </span>
+                <span class="text-sm md:text-base">⚡ Offre limitée - Rejoignez-nous maintenant</span>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight">
+                Prêt à transformer votre
+                <br>
+                <span class="inline-block relative">
+                    <span class="relative z-10">recherche immobilière ?</span>
+                    <span class="absolute bottom-2 left-0 right-0 h-4 bg-yellow-400/50 -rotate-1"></span>
+                </span>
+            </h2>
+
+            <!-- Description -->
+            <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+                Rejoignez des milliers d'entrepreneurs qui ont déjà trouvé leur espace idéal. 
+                <span class="font-bold text-yellow-300">Commencez gratuitement dès aujourd'hui !</span>
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                
+                <!-- Primary CTA -->
+                <a href="#signup" class="group relative inline-flex items-center justify-center gap-3 bg-white text-blue-600 px-10 py-5 rounded-2xl font-black text-lg hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300 shadow-2xl hover:shadow-yellow-400/50 hover:scale-110 overflow-hidden">
+                    <!-- Shimmer Effect -->
+                    <span class="absolute inset-0 shimmer-effect opacity-0 group-hover:opacity-100"></span>
+                    
+                    <span class="relative z-10 flex items-center gap-3">
+                        🚀 Commencer gratuitement
+                        <svg class="w-6 h-6 transition-transform group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Secondary CTA -->
+                <a href="#demo" class="group inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md border-3 border-white/40 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 shadow-2xl hover:scale-105">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Voir la démo</span>
+                </a>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="flex flex-wrap justify-center items-center gap-8 mb-12">
+                <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                    <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <span class="font-bold">4.9/5</span>
+                    <span class="text-sm">Note moyenne</span>
+                </div>
+
+                <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                    <svg class="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-bold">5000+</span>
+                    <span class="text-sm">Utilisateurs actifs</span>
+                </div>
+
+                <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                    <svg class="w-6 h-6 text-cyan-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-bold">100%</span>
+                    <span class="text-sm">Sécurisé</span>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                
+                <!-- Feature 1 -->
+                <div class="group bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all hover:scale-105 hover:border-white/40 cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform shadow-xl">
+                        ⚡
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Inscription rapide</h3>
+                    <p class="text-white/80 text-sm">Créez votre compte en moins de 2 minutes</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="group bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all hover:scale-105 hover:border-white/40 cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform shadow-xl">
+                        🎯
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Résultats garantis</h3>
+                    <p class="text-white/80 text-sm">Trouvez votre espace en 24h maximum</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="group bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all hover:scale-105 hover:border-white/40 cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform shadow-xl">
+                        💰
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Sans engagement</h3>
+                    <p class="text-white/80 text-sm">Essai gratuit, annulation à tout moment</p>
+                </div>
+            </div>
+
+            <!-- Bottom Text -->
+            <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-white/80 text-sm">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Aucune carte bancaire requise</span>
+                </div>
+                <span class="hidden sm:block">•</span>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Annulation gratuite</span>
+                </div>
+                <span class="hidden sm:block">•</span>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Support 24/7</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Wave -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" fill="white"/>
+        </svg>
+    </div>
+</section>
     </section>
 
 </main>

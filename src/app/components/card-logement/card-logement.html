@@ -1,16 +1,98 @@
 
-<div class="max-w-sm rounded-xl overflow-hidden shadow-lg bg-white border border-gray-200">
-  <img class="w-full h-48 object-cover" [src]="infologement.image" alt="Image du logement">
-  <div class="p-5">
-    <div class="flex justify-between items-center mb-2">
-      <span class="text-blue-600 font-bold uppercase text-xs tracking-widest">{{ infologement.type }}</span>
-      <span class="text-gray-900 font-bold">{{ infologement.prix }} FCFA</span>
+  <section class="liste-logement group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+    <!-- Image Container with Overlay -->
+    <div class="relative h-72 overflow-hidden">
+        <img class="liste-photo w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+             [src]="infologement.image" 
+             alt="photo du logement">
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
     </div>
-    <h2 class="text-xl font-bold text-gray-800 mb-2">{{ infologement.nom }}</h2>
-    <p class="text-gray-600 text-sm">📍 {{ infologement.quartier }}, {{ infologement.ville }}</p>
-
-    <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-      Voir les détails
-    </button>
-  </div>
-</div>
+    
+    <!-- Content Container -->
+    <div class="p-6 space-y-4">
+        <!-- Title & Location -->
+        <div class="space-y-2">
+            <h2 class="font-bold text-2xl text-[#190487] group-hover:text-[#2506b3] transition-colors duration-300 leading-tight">
+                {{infologement.nom}}
+            </h2>
+            <div class="flex justify-between items-center gap-2 text-gray-600">
+                <div class="flex items-center gap-2 text-gray-600">
+                          <svg class="w-4 h-4 text-[#190487]" fill="currentColor" viewBox="0 0 20 20">
+                           <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                          </svg>
+                         <h3 class="text-sm font-medium">{{infologement.quartier}}, {{infologement.ville}}</h3>
+                </div>
+                <div>
+                         
+                            <p class="text-[#190487] font-bold text-xl">
+                                  {{ infologement.prix | number:'1.0-0' }} 
+                                <span class="text-sm uppercase">fcfa</span>
+                             </p>
+                </div>
+              
+            </div>
+        </div>
+        
+        <!-- Description -->
+        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
+           Publié le : {{infologement.dateAjout | date:'longDate'}}
+        </p>
+        
+        <!-- Amenities -->
+        <div class="pt-4 border-t border-gray-100">
+            <ul class="flex flex-wrap gap-2">
+                @if (infologement.wifi) {
+                    <li class="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 text-[#190487] text-xs font-semibold rounded-full flex items-center gap-1.5 hover:from-purple-100 hover:to-indigo-100 transition-all duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                        </svg>
+                        WiFi
+                    </li>
+                }
+                @if (infologement.parking) {
+                <li 
+                    class="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 text-[#190487] text-xs font-semibold rounded-full flex items-center gap-1.5 hover:from-purple-100 hover:to-indigo-100 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                    </svg>
+                    Parking
+                </li>
+                }
+                @if (infologement.climatisation) {
+                <li 
+                    class="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 text-[#190487] text-xs font-semibold rounded-full flex items-center gap-1.5 hover:from-purple-100 hover:to-indigo-100 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                    </svg>
+                    Climatisation
+                </li>
+                }
+                @if (infologement.piscine) {
+                 <li 
+                
+                    class="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 text-[#190487] text-xs font-semibold rounded-full flex items-center gap-1.5 hover:from-purple-100 hover:to-indigo-100 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                    </svg>
+                    Piscine
+                </li>
+                }
+                
+            </ul>
+        </div>
+        
+        <!-- Call to Action Button (Optional) -->
+        <div class="pt-4">
+            <a href="#" >
+              <button  class="w-full bg-gradient-to-r from-[#190487] to-[#2506b3] text-white font-semibold py-3 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                Voir les détails
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </a>
+            
+        </div>
+    </div>
+</section>

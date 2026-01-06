@@ -18,9 +18,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Almadies',
       prix: 300000,
-      image: 'assets/images/studio1.jpg',
+      image: 'assets/images/logement1.png',
       disponible: true,
       type: 'Studio',
+      description: 'Studio moderne avec vue sur la ville',
+      wifi: true,
+      parking: false,
+      climatisation: true,
+      piscine: false,
+      dateAjout: new Date(2024, 1, 15)
     },
     {
       id: 2,
@@ -28,9 +34,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Plateau',
       prix: 500000,
-      image: 'assets/images/bureau1.jpg',
+      image: 'assets/images/logement2.png',
       disponible: false,
       type: 'Bureau',
+      description: 'Bureau spacieux au cœur du quartier des affaires',
+      wifi: true,
+      parking: false,
+      climatisation: true,
+      piscine: false,
+      dateAjout: new Date(2024, 2, 5)
     },
     {
       id: 3,
@@ -38,9 +50,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Mermoz',
       prix: 200000,
-      image: 'assets/images/chambre1.jpg',
+      image: 'assets/images/logement3.png',
       disponible: true,
       type: 'Chambre',
+      description: 'Chambre confortable proche des commodités',
+      wifi: false,
+      parking: true,
+      climatisation: false,
+      piscine: true,
+      dateAjout: new Date(2024, 3, 10)
     },
     {
       id: 4,
@@ -48,9 +66,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Yoff',
       prix: 350000,
-      image: 'assets/images/studio2.jpg',
+      image: 'assets/images/logement4.png',
       disponible: true,
       type: 'Studio',
+      description: 'Studio lumineux avec vue sur la mer',
+      wifi: true,
+      parking: false,
+      climatisation: true,
+      piscine: false,
+      dateAjout: new Date(2024, 4, 2)
     },
     {
       id: 5,
@@ -58,9 +82,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Gorée',
       prix: 450000,
-      image: 'assets/images/bureau2.jpg',
+      image: 'assets/images/logement5.png',
       disponible: true,
       type: 'Bureau',
+      description: 'Bureau central au cœur de Gorée',
+      wifi: true,
+      parking: true,
+      climatisation: false,
+      piscine: true,
+      dateAjout: new Date(2024, 4, 20)
     },
     {
       id: 6,
@@ -68,9 +98,15 @@ export class Home implements AfterViewInit, OnDestroy {
       ville: 'Dakar',
       quartier: 'Ngor',
       prix: 250000,
-      image: 'assets/images/chambre2.jpg',
+      image: 'assets/images/logement6.png',
       disponible: false,
       type: 'Chambre',
+      description: 'Chambre élégante avec accès à la piscine',
+      wifi: false,
+      parking: false,
+      climatisation: true,
+      piscine: true,
+      dateAjout: new Date(2024, 5, 15)
     },
   ];
 
@@ -79,7 +115,7 @@ export class Home implements AfterViewInit, OnDestroy {
   autoplayInterval: any = null;
   isPlaying = true;
   totalSlides = 4;
-  slideInterval = 5000; // ms
+  slideInterval = 3000; // ms
 
   private removeMouseEnter?: () => void;
   private removeMouseLeave?: () => void;
