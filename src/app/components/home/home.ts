@@ -2,14 +2,21 @@ import { Component, Input, AfterViewInit, OnDestroy, ViewChild, ElementRef, Host
 import { CommonModule } from '@angular/common';
 import { CardLogement } from '../card-logement/card-logement';
 import { Logement } from '../../models/logement';
+import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CardLogement],
+  imports: [CommonModule, CardLogement, FormsModule, RouterModule, RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
 })
 export class Home implements AfterViewInit, OnDestroy {
+
+
+  searchQuartier: string = '';
+  searchType: string = 'Type de logement'; // Doit correspondre à ton option par défaut
+  showSuggestions: boolean = false;
   @ViewChild('sliderSection') sliderSection!: ElementRef;
   @Input() logements: Logement[] = [
     {
@@ -110,6 +117,14 @@ export class Home implements AfterViewInit, OnDestroy {
     },
   ];
 
+
+  get filteredLogements(): Logement[] {
+    return this.logements.filter(logement => {
+      const matchesQuartier = this.searchQuartier ? logement.quartier.toLowerCase().includes(this.searchQuartier.toLowerCase()) : true;
+      const matchesType = this.searchType && this.searchType !== 'Type de logement' ? logement.type === this.searchType : true;
+      return matchesQuartier && matchesType;
+    });
+  }
   // Slider state
   currentSlide = 1;
   autoplayInterval: any = null;

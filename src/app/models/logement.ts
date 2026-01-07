@@ -12,5 +12,5 @@ export interface Logement {
   parking: boolean;
   climatisation: boolean;
   piscine: boolean;
-  type: 'Studio' | 'Bureau' | 'Chambre';
+  type: 'Studio' | 'Bureau' | 'Chambre' | 'Appartement';
 }
