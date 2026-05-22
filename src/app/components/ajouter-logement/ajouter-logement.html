@@ -1,0 +1,185 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id="form-container">
+  <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
+    <!-- Header with Progress Stepper -->
+    <div class="bg-gradient-to-r from-[#190487] to-[#2506b3] py-8 px-10">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-black text-white">Ajouter un bien</h2>
+        <span class="bg-white/20 text-white px-4 py-1 rounded-full text-sm font-bold">Étape {{currentStep()}}/3</span>
+      </div>
+      
+      <!-- Progress Bar UI -->
+      <div class="flex gap-2 h-2">
+        <div class="flex-1 rounded-full transition-all duration-500" [class.bg-white]="currentStep() >= 1" [class.bg-white/30]="currentStep() < 1"></div>
+        <div class="flex-1 rounded-full transition-all duration-500" [class.bg-white]="currentStep() >= 2" [class.bg-white/30]="currentStep() < 2"></div>
+        <div class="flex-1 rounded-full transition-all duration-500" [class.bg-white]="currentStep() >= 3" [class.bg-white/30]="currentStep() < 3"></div>
+      </div>
+    </div>
+
+    <form [formGroup]="logementForm" (ngSubmit)="onSubmit()" class="p-10">
+      
+      <!-- ÉTAPE 1: INFORMATIONS DE BASE -->
+      <div *ngIf="currentStep() === 1" class="space-y-8 animate-in fade-in slide-in-from-right duration-500">
+        <h3 class="text-xl font-bold text-gray-900 border-b pb-2">1. Informations de base</h3>
+        
+        <!-- Smart Tip -->
+        <div class="p-4 bg-blue-50 border-l-4 border-blue-600 rounded-r-xl text-sm text-blue-800 font-medium">
+            💡 <strong>Conseil :</strong> Les annonces avec un titre clair et un prix cohérent avec le marché reçoivent 40% de contacts en plus.
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Nom du bien</label>
+            <input type="text" formControlName="nom" placeholder="ex: Villa de luxe avec piscine"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Prix (FCFA)</label>
+            <input type="number" formControlName="prix" placeholder="ex: 500000"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+            <p class="text-[10px] text-gray-400 font-bold mt-1">Moyenne à Dakar : ~350.000 FCFA pour un studio.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Quartier</label>
+            <input type="text" formControlName="quartier" (blur)="fetchCoordinates()" placeholder="ex: Almadies"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+            <p *ngIf="isGeocoding()" class="text-xs text-blue-600 font-bold animate-pulse">Recherche de localisation...</p>
+          </div>
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Type de bien</label>
+            <select formControlName="type" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+              <option value="Studio">Studio</option>
+              <option value="Appartement">Appartement</option>
+              <option value="Chambre">Chambre</option>
+              <option value="Bureau">Bureau</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Surface (m²)</label>
+            <input type="number" formControlName="surface"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+        </div>
+
+        <!-- Dynamic Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" *ngIf="logementForm.get('type')?.value !== 'Bureau'">
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Nombre de chambres</label>
+            <input type="number" formControlName="chambres" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Nombre de salles de bain</label>
+            <input type="number" formControlName="sallesDeBain" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <label class="text-sm font-bold text-gray-700 uppercase">Type de contrat</label>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-blue-50 flex-1 border-2 border-transparent" [class.border-[#190487]]="logementForm.get('typeContrat')?.value === 'location'">
+              <input type="radio" formControlName="typeContrat" value="location" class="w-5 h-5 text-[#190487]">
+              <span class="font-bold">Location</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-blue-50 flex-1 border-2 border-transparent" [class.border-[#190487]]="logementForm.get('typeContrat')?.value === 'vente'">
+              <input type="radio" formControlName="typeContrat" value="vente" class="w-5 h-5 text-[#190487]">
+              <span class="font-bold">Vente</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button type="button" (click)="nextStep()" class="px-8 py-3 bg-[#190487] text-white font-bold rounded-xl hover:scale-105 transition-all">
+            Suivant
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2: ÉQUIPEMENTS & PHOTOS -->
+      <div *ngIf="currentStep() === 2" class="space-y-8 animate-in fade-in slide-in-from-right duration-500">
+        <h3 class="text-xl font-bold text-gray-900 border-b pb-2">2. Détails & Photos</h3>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-all border-2 border-transparent" [class.border-blue-200]="logementForm.get('wifi')?.value">
+            <input type="checkbox" formControlName="wifi" class="w-5 h-5 rounded text-[#190487]">
+            <span class="font-medium text-gray-700">WiFi</span>
+          </label>
+          <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-all border-2 border-transparent" [class.border-blue-200]="logementForm.get('climatisation')?.value">
+            <input type="checkbox" formControlName="climatisation" class="w-5 h-5 rounded text-[#190487]">
+            <span class="font-medium text-gray-700">Climatisation</span>
+          </label>
+          <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-all border-2 border-transparent" [class.border-blue-200]="logementForm.get('parking')?.value">
+            <input type="checkbox" formControlName="parking" class="w-5 h-5 rounded text-[#190487]">
+            <span class="font-medium text-gray-700">Parking</span>
+          </label>
+        </div>
+
+        <div class="space-y-4">
+          <label class="text-sm font-bold text-gray-700 uppercase">Photos du bien</label>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Preview Cards -->
+            @for (img of imagePreviews(); track $index) {
+              <div class="relative aspect-square rounded-2xl overflow-hidden group">
+                <img [src]="img" class="w-full h-full object-cover">
+                <button type="button" (click)="removeImage($index)" class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+              </div>
+            }
+            <!-- Add Button -->
+            <label class="aspect-square rounded-2xl border-4 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-[#190487] hover:bg-blue-50 transition-all">
+              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              <span class="text-xs font-bold text-gray-500 mt-2">Ajouter</span>
+              <input type="file" (change)="onFileSelected($event)" multiple class="hidden" accept="image/*">
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <button type="button" (click)="prevStep()" class="px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-xl">Retour</button>
+          <button type="button" (click)="nextStep()" class="px-8 py-3 bg-[#190487] text-white font-bold rounded-xl">Suivant</button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 3: CONTACT & VALIDATION -->
+      <div *ngIf="currentStep() === 3" class="space-y-8 animate-in fade-in slide-in-from-right duration-500">
+        <h3 class="text-xl font-bold text-gray-900 border-b pb-2">3. Contact & Description</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">WhatsApp</label>
+            <input type="text" formControlName="whatsappNumber" placeholder="ex: +221770000000"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+          <div class="space-y-1">
+            <label class="text-sm font-bold text-gray-700 uppercase">Téléphone</label>
+            <input type="text" formControlName="telephone" placeholder="ex: +221330000000"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-sm font-bold text-gray-700 uppercase">Description</label>
+          <textarea formControlName="description" rows="5" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#190487] focus:bg-white outline-none transition-all"></textarea>
+        </div>
+
+        <div class="bg-blue-50 p-6 rounded-2xl border-2 border-blue-100">
+          <p class="text-sm text-blue-800 font-medium">
+            💡 En publiant cette annonce, vous confirmez que les informations sont exactes. Votre bien sera visible immédiatement par des milliers d'utilisateurs.
+          </p>
+        </div>
+
+        <div class="flex justify-between">
+          <button type="button" (click)="prevStep()" class="px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-xl">Retour</button>
+          <button type="submit" [disabled]="logementForm.invalid || isUploading()"
+            class="px-12 py-3 bg-gradient-to-r from-[#190487] to-[#2506b3] text-white font-bold rounded-xl disabled:opacity-50 flex items-center gap-2">
+            <span *ngIf="isUploading()" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+            {{ isUploading() ? 'Chargement...' : 'Publier l\'annonce' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

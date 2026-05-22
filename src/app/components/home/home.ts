@@ -1,141 +1,98 @@
-import { Component, Input, AfterViewInit, OnDestroy, ViewChild, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ViewChild, ElementRef, Renderer2, signal, computed, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardLogement } from '../card-logement/card-logement';
+import { SkeletonCard } from '../skeleton-card/skeleton-card';
 import { Logement } from '../../models/logement';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { LogementService } from '../../services/logement.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CardLogement, FormsModule, RouterModule, RouterLink],
+  standalone: true,
+  imports: [CommonModule, CardLogement, SkeletonCard, FormsModule, RouterModule, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
 export class Home implements AfterViewInit, OnDestroy {
+  public logementService = inject(LogementService);
+  private renderer = inject(Renderer2);
 
+  searchQuartier = signal('');
+  searchType = signal('Type de logement');
+  minPrice = signal<number | null>(null);
+  maxPrice = signal<number | null>(null);
+  searchContract = signal('Tous les contrats');
+  
+  // Amenities filters
+  filterWifi = signal(false);
+  filterClim = signal(false);
+  filterParking = signal(false);
 
-  searchQuartier: string = '';
-  searchType: string = 'Type de logement'; // Doit correspondre à ton option par défaut
-  showSuggestions: boolean = false;
-  @ViewChild('sliderSection') sliderSection!: ElementRef;
-  @Input() logements: Logement[] = [
-    {
-      id: 1,
-      nom: 'Studio Moderne',
-      ville: 'Dakar',
-      quartier: 'Almadies',
-      prix: 300000,
-      image: 'assets/images/logement1.png',
-      disponible: true,
-      type: 'Studio',
-      description: 'Studio moderne avec vue sur la ville',
-      wifi: true,
-      parking: false,
-      climatisation: true,
-      piscine: false,
-      dateAjout: new Date(2024, 1, 15)
-    },
-    {
-      id: 2,
-      nom: 'Bureau Spacieux',
-      ville: 'Dakar',
-      quartier: 'Plateau',
-      prix: 500000,
-      image: 'assets/images/logement2.png',
-      disponible: false,
-      type: 'Bureau',
-      description: 'Bureau spacieux au cœur du quartier des affaires',
-      wifi: true,
-      parking: false,
-      climatisation: true,
-      piscine: false,
-      dateAjout: new Date(2024, 2, 5)
-    },
-    {
-      id: 3,
-      nom: 'Chambre Confortable',
-      ville: 'Dakar',
-      quartier: 'Mermoz',
-      prix: 200000,
-      image: 'assets/images/logement3.png',
-      disponible: true,
-      type: 'Chambre',
-      description: 'Chambre confortable proche des commodités',
-      wifi: false,
-      parking: true,
-      climatisation: false,
-      piscine: true,
-      dateAjout: new Date(2024, 3, 10)
-    },
-    {
-      id: 4,
-      nom: 'Studio Lumineux',
-      ville: 'Dakar',
-      quartier: 'Yoff',
-      prix: 350000,
-      image: 'assets/images/logement4.png',
-      disponible: true,
-      type: 'Studio',
-      description: 'Studio lumineux avec vue sur la mer',
-      wifi: true,
-      parking: false,
-      climatisation: true,
-      piscine: false,
-      dateAjout: new Date(2024, 4, 2)
-    },
-    {
-      id: 5,
-      nom: 'Bureau Central',
-      ville: 'Dakar',
-      quartier: 'Gorée',
-      prix: 450000,
-      image: 'assets/images/logement5.png',
-      disponible: true,
-      type: 'Bureau',
-      description: 'Bureau central au cœur de Gorée',
-      wifi: true,
-      parking: true,
-      climatisation: false,
-      piscine: true,
-      dateAjout: new Date(2024, 4, 20)
-    },
-    {
-      id: 6,
-      nom: 'Chambre Élégante',
-      ville: 'Dakar',
-      quartier: 'Ngor',
-      prix: 250000,
-      image: 'assets/images/logement6.png',
-      disponible: false,
-      type: 'Chambre',
-      description: 'Chambre élégante avec accès à la piscine',
-      wifi: false,
-      parking: false,
-      climatisation: true,
-      piscine: true,
-      dateAjout: new Date(2024, 5, 15)
-    },
+  // New features for UI
+  categories = [
+    { name: 'Studio', icon: '🏢', count: computed(() => this.logements().filter(l => l.type === 'Studio').length) },
+    { name: 'Appartement', icon: '🏠', count: computed(() => this.logements().filter(l => l.type === 'Appartement').length) },
+    { name: 'Bureau', icon: '💼', count: computed(() => this.logements().filter(l => l.type === 'Bureau').length) },
+    { name: 'Chambre', icon: '🛏️', count: computed(() => this.logements().filter(l => l.type === 'Chambre').length) }
   ];
 
+  stats = [
+    { label: 'Biens disponibles', value: '500+' },
+    { label: 'Clients satisfaits', value: '1.2k' },
+    { label: 'Villes couvertes', value: '12' },
+    { label: 'Agents experts', value: '25' }
+  ];
 
-  get filteredLogements(): Logement[] {
-    return this.logements.filter(logement => {
-      const matchesQuartier = this.searchQuartier ? logement.quartier.toLowerCase().includes(this.searchQuartier.toLowerCase()) : true;
-      const matchesType = this.searchType && this.searchType !== 'Type de logement' ? logement.type === this.searchType : true;
-      return matchesQuartier && matchesType;
-    });
+  showSuggestions = signal(false);
+
+  @ViewChild('sliderSection') sliderSection!: ElementRef;
+  @ViewChild('resultsSection') resultsSection!: ElementRef;
+
+  logements = this.logementService.logements;
+
+  scrollToResults() {
+    if (this.resultsSection) {
+      this.resultsSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
+
+  selectCategory(categoryName: string) {
+    this.searchType.set(categoryName);
+    setTimeout(() => this.scrollToResults(), 100);
+  }
+
+  filteredLogements = computed(() => {
+    const q = this.searchQuartier().toLowerCase();
+    const t = this.searchType();
+    const minP = this.minPrice();
+    const maxP = this.maxPrice();
+    const contract = this.searchContract();
+    
+    return this.logements().filter(logement => {
+      const matchesQuartier = q ? logement.quartier.toLowerCase().includes(q) : true;
+      const matchesType = t && t !== 'Type de logement' ? logement.type === t : true;
+      const matchesMinPrice = minP !== null ? logement.prix >= minP : true;
+      const matchesMaxPrice = maxP !== null ? logement.prix <= maxP : true;
+      const matchesContract = contract && contract !== 'Tous les contrats' ? logement.typeContrat === contract : true;
+      
+      const matchesWifi = this.filterWifi() ? logement.wifi : true;
+      const matchesClim = this.filterClim() ? logement.climatisation : true;
+      const matchesParking = this.filterParking() ? logement.parking : true;
+
+      return matchesQuartier && matchesType && matchesMinPrice && matchesMaxPrice && matchesContract && matchesWifi && matchesClim && matchesParking;
+    });
+  });
+
   // Slider state
-  currentSlide = 1;
-  autoplayInterval: any = null;
-  isPlaying = true;
+  currentSlide = signal(1);
+  autoplayInterval: ReturnType<typeof setInterval> | null = null;
+  isPlaying = signal(true);
   totalSlides = 4;
   slideInterval = 3000; // ms
 
   private removeMouseEnter?: () => void;
   private removeMouseLeave?: () => void;
-
-  constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit(): void {
     // Initialize slider after view is ready
@@ -144,11 +101,11 @@ export class Home implements AfterViewInit, OnDestroy {
     // Pause on hover (using renderer to be safe)
     if (this.sliderSection && this.sliderSection.nativeElement) {
       this.removeMouseEnter = this.renderer.listen(this.sliderSection.nativeElement, 'mouseenter', () => {
-        if (this.isPlaying) this.stopAutoplay();
+        if (this.isPlaying()) this.stopAutoplay();
       });
 
       this.removeMouseLeave = this.renderer.listen(this.sliderSection.nativeElement, 'mouseleave', () => {
-        if (this.isPlaying) this.startAutoplay();
+        if (this.isPlaying()) this.startAutoplay();
       });
     }
   }
@@ -188,25 +145,25 @@ export class Home implements AfterViewInit, OnDestroy {
     if (targetSlide) targetSlide.classList.add('active');
     if (targetDot) targetDot.classList.add('active');
 
-    this.currentSlide = slideNumber;
+    this.currentSlide.set(slideNumber);
     this.resetProgressBar();
 
-    if (this.isPlaying) this.startAutoplay();
+    if (this.isPlaying()) this.startAutoplay();
   }
 
   nextSlide() {
-    const next = this.currentSlide >= this.totalSlides ? 1 : this.currentSlide + 1;
+    const next = this.currentSlide() >= this.totalSlides ? 1 : this.currentSlide() + 1;
     this.goToSlide(next);
   }
 
   prevSlide() {
-    const prev = this.currentSlide <= 1 ? this.totalSlides : this.currentSlide - 1;
+    const prev = this.currentSlide() <= 1 ? this.totalSlides : this.currentSlide() - 1;
     this.goToSlide(prev);
   }
 
   toggleAutoplay() {
-    this.isPlaying = !this.isPlaying;
-    if (this.isPlaying) {
+    this.isPlaying.update(p => !p);
+    if (this.isPlaying()) {
       this.startAutoplay();
     } else {
       this.stopAutoplay();
@@ -247,6 +204,6 @@ export class Home implements AfterViewInit, OnDestroy {
 
   initialize() {
     this.goToSlide(1);
-    if (this.isPlaying) this.startAutoplay();
+    if (this.isPlaying()) this.startAutoplay();
   }
 }

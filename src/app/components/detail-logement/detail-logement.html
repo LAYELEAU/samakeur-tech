@@ -1,154 +1,51 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Villa Moderne Almadies - PropTech</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
-        }
-
-        .float-animation {
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .slide-in {
-            animation: slideIn 0.6s ease-out;
-        }
-
-        .pulse-glow {
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        .gallery-item {
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-            z-index: 10;
-        }
-
-        /* Lightbox styles */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-        }
-
-        .lightbox.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
-        }
-    </style>
-</head>
 <body class="bg-gray-50">
-
-    <!-- Sticky Header Navigation -->
-    <nav class="sticky-header bg-white/90 border-b border-gray-200 shadow-lg">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center text-xl">
-                        🏢
-                    </div>
-                    <span class="text-xl font-black text-gray-900">PropTech</span>
-                </a>
-
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="#" class="text-gray-600 hover:text-blue-600 font-semibold transition-all">Retour à la recherche</a>
-                    <button class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                        </svg>
-                        Partager
-                    </button>
-                    <button class="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-all">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
-                        </svg>
-                        Favoris
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <!-- Hero Gallery Section -->
     <section class="relative bg-black">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="grid grid-cols-4 gap-2 h-[600px]">
                 <!-- Main Image -->
-                <div class="col-span-4 md:col-span-2 md:row-span-2 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" onclick="openLightbox(0)">
-                    <img [src]="infologement?.image" alt="Villa principale" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="col-span-4 md:col-span-2 md:row-span-2 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" (click)="openLightbox(0)">
+                    <img [src]="infologement()?.images ? infologement()?.images![0] : ''" alt="Villa principale" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all"></div>
                     <div class="absolute bottom-4 left-4 text-white font-bold text-lg opacity-0 group-hover:opacity-100 transition-all">Photo principale</div>
                 </div>
 
+                <!-- Lightbox Overlay -->
+                @if (isLightboxOpen()) {
+                    <div class="fixed inset-0 z-[110] bg-black/95 flex items-center justify-center fade-in" (click)="closeLightbox()">
+                        <button class="absolute top-8 right-8 text-white text-3xl hover:scale-110 transition-transform" (click)="closeLightbox()">✕</button>
+                        <button class="absolute left-8 text-white text-5xl hover:scale-110 transition-transform" (click)="prevImage($event)">‹</button>
+                        <button class="absolute right-8 text-white text-5xl hover:scale-110 transition-transform" (click)="nextImage($event)">›</button>
+                        <img [src]="galerieImages()[currentImageIndex()]" class="max-w-[90%] max-h-[90%] object-contain rounded-xl shadow-2xl" loading="lazy">
+                    </div>
+                }
+
                 <!-- Secondary Images -->
-                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" onclick="openLightbox(1)">
-                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" alt="Salon" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" (click)="openLightbox(1)">
+                    <img [src]="galerieImages()[1]" alt="Galerie 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                 </div>
 
-                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" onclick="openLightbox(2)">
-                    <img src="https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=600&h=400&fit=crop" alt="Cuisine" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" (click)="openLightbox(2)">
+                    <img [src]="galerieImages()[2]" alt="Galerie 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                 </div>
 
-                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" onclick="openLightbox(3)">
-                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&h=400&fit=crop" alt="Chambre" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" (click)="openLightbox(3)">
+                    <img [src]="galerieImages()[3]" alt="Galerie 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                 </div>
 
-                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" onclick="openLightbox(4)">
-                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=400&fit=crop" alt="Salle de bain" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
-                    <button class="absolute inset-0 flex items-center justify-center bg-black/60 text-white font-bold text-lg hover:bg-black/70 transition-all">
-                        + 25 photos
-                    </button>
+                <div class="col-span-2 md:col-span-1 gallery-item cursor-pointer rounded-2xl overflow-hidden group relative" (click)="openLightbox(4)">
+                    @if (galerieImages()[4]) {
+                        <img [src]="galerieImages()[4]" alt="Galerie 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                    } @else {
+                        <img [src]="galerieImages()[0]" alt="Galerie 5" class="w-full h-full object-cover blur-sm" loading="lazy">
+                    }
+                    <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-all flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">+ {{ galerieImages().length }} photos</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,180 +60,152 @@
                 <div class="lg:col-span-2 space-y-8">
                     
                     <!-- Header Info -->
-                    <div class="bg-white rounded-3xl p-8 shadow-xl fade-in">
-                        <div class="flex items-start justify-between mb-6">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl">
+                        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-6">
                             <div>
                                 <div class="flex items-center gap-3 mb-3">
-                                    <span class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-bold inline-flex items-center gap-2">
+                                    <span class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-xs font-bold inline-flex items-center gap-2">
                                         <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                                        Disponible
+                                        {{ (infologement()?.disponible ? 'disponible' : 'indisponible') | uppercase }}
                                     </span>
-                                    <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
-                                        🏠 Villa
+                                    <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">
+                                        {{ infologement()?.type }}
+                                    </span>
+                                    <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-xs font-bold uppercase">
+                                        {{ infologement()?.typeContrat }}
                                     </span>
                                 </div>
                                 <h1 class="text-4xl md:text-5xl font-black text-gray-900 mb-2">
-                                    {{ infologement?.nom }}
+                                    {{ infologement()?.nom }}
                                 </h1>
                                 <p class="text-xl text-gray-600 flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                                    </svg>
-                                    {{ infologement?.quartier }}, {{ infologement?.ville }}
+                                    📍 {{ infologement()?.quartier }}, {{ infologement()?.ville }}
                                 </p>
                             </div>
-                            <div class="text-right">
+                            <div class="md:text-right">
                                 <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
-                                    {{ infologement?.prix | number:'1.0-0' }} <span class="text-xl font-semibold text-gray-500">fcfa</span>
+                                    {{ infologement()?.prix | number:'1.0-0' }} <span class="text-xl font-semibold text-gray-500">fcfa</span>
                                 </div>
-                                <div class="text-sm text-gray-500 font-semibold">par mois</div>
+                                <div class="text-sm text-gray-500 font-semibold">{{ infologement()?.typeContrat === 'vente' ? 'Prix total' : 'par mois' }}</div>
                             </div>
                         </div>
 
                         <!-- Quick Stats -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-100">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-2xl">
-                                    🛏️
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-black text-blue-900">4</div>
-                                    <div class="text-xs text-gray-600 font-semibold">Chambres</div>
-                                </div>
+                            <div class="p-4 bg-blue-50 rounded-2xl border-2 border-blue-100 text-center">
+                                <div class="text-2xl mb-1">🛏️</div>
+                                <div class="text-xl font-black text-blue-900">{{ infologement()?.chambres || 0 }}</div>
+                                <div class="text-xs text-gray-500 uppercase font-bold">Chambres</div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-100">
-                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl">
-                                    🚿
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-black text-purple-900">3</div>
-                                    <div class="text-xs text-gray-600 font-semibold">Salles de bain</div>
-                                </div>
+                            <div class="p-4 bg-purple-50 rounded-2xl border-2 border-purple-100 text-center">
+                                <div class="text-2xl mb-1">🚿</div>
+                                <div class="text-xl font-black text-purple-900">{{ infologement()?.sallesDeBain || 0 }}</div>
+                                <div class="text-xs text-gray-500 uppercase font-bold">Bains</div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border-2 border-green-100">
-                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-2xl">
-                                    📏
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-black text-green-900">350m²</div>
-                                    <div class="text-xs text-gray-600 font-semibold">Surface</div>
-                                </div>
+                            <div class="p-4 bg-green-50 rounded-2xl border-2 border-green-100 text-center">
+                                <div class="text-2xl mb-1">📏</div>
+                                <div class="text-xl font-black text-green-900">{{ infologement()?.surface || 0 }}m²</div>
+                                <div class="text-xs text-gray-500 uppercase font-bold">Surface</div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl border-2 border-orange-100">
-                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center text-2xl">
-                                    🚗
-                                </div>
-                                <div>
-                                    <div class="text-2xl font-black text-orange-900">2</div>
-                                    <div class="text-xs text-gray-600 font-semibold">Parking</div>
-                                </div>
+                            <div class="p-4 bg-orange-50 rounded-2xl border-2 border-orange-100 text-center">
+                                <div class="text-2xl mb-1">🚗</div>
+                                <div class="text-xl font-black text-orange-900">{{ infologement()?.parking ? 'Oui' : 'Non' }}</div>
+                                <div class="text-xs text-gray-500 uppercase font-bold">Parking</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Description -->
-                    <div class="bg-white rounded-3xl p-8 shadow-xl slide-in">
-                        <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3">
-                            <span class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-xl">
-                                📝
-                            </span>
-                            Description
-                        </h2>
-                        <div class="prose prose-lg max-w-none text-gray-600">
-                            <p class="leading-relaxed mb-4">
-                                Magnifique villa moderne située dans le quartier prisé des Almadies. Cette propriété d'exception offre un cadre de vie exceptionnel avec ses espaces lumineux et son architecture contemporaine.
-                            </p>
-                            <p class="leading-relaxed mb-4">
-                                La villa dispose de 4 chambres spacieuses dont une suite parentale avec dressing et salle de bain privative. Le salon cathédrale avec ses grandes baies vitrées offre une vue imprenable sur l'océan.
-                            </p>
-                            <p class="leading-relaxed">
-                                Jardin paysager de 500m², piscine chauffée, cuisine équipée haut de gamme, système domotique, climatisation centrale, et sécurité 24h/24.
-                            </p>
+                    <div class="bg-white rounded-3xl p-8 shadow-xl">
+                        <h2 class="text-2xl font-black text-gray-900 mb-6">Description</h2>
+                        <p class="text-gray-600 leading-relaxed text-lg mb-8">
+                           {{ infologement()?.description }}
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                            <!-- Points Forts (Dynamic based on data) -->
+                            <div>
+                                <h3 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+                                    <span class="text-blue-600">💎</span> Points Forts
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li *ngIf="infologement()?.isVerified" class="flex items-center gap-3 text-gray-600 font-medium">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Annonce vérifiée par nos experts
+                                    </li>
+                                    <li *ngIf="infologement()?.climatisation" class="flex items-center gap-3 text-gray-600 font-medium">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Entièrement climatisé
+                                    </li>
+                                    <li *ngIf="infologement()?.wifi" class="flex items-center gap-3 text-gray-600 font-medium">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Internet haut débit disponible
+                                    </li>
+                                    <li *ngIf="infologement()?.parking" class="flex items-center gap-3 text-gray-600 font-medium">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Parking sécurisé inclus
+                                    </li>
+                                    <li class="flex items-center gap-3 text-gray-600 font-medium">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> {{ infologement()?.quartier }} : Zone calme & prisée
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Services de Proximité -->
+                            <div>
+                                <h3 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+                                    <span class="text-blue-600">📍</span> À proximité
+                                </h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                                        🏫 Écoles
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                                        🛒 Supermarché
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                                        🏥 Clinique
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                                        🏦 Banques
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Amenities -->
-                    <div class="bg-white rounded-3xl p-8 shadow-xl slide-in" style="animation-delay: 0.1s;">
-                        <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3">
-                            <span class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl">
-                                ⭐
-                            </span>
-                            Équipements & Services
-                        </h2>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-lg flex items-center justify-center">
-                                    ✅
+                    <div class="bg-white rounded-3xl p-8 shadow-xl">
+                        <h2 class="text-2xl font-black text-gray-900 mb-6">Équipements</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            @if (infologement()?.wifi) {
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                                    <span class="text-xl">📶</span> <span class="font-bold text-gray-700">WiFi</span>
                                 </div>
-                                <span class="font-semibold text-gray-700">Piscine privée</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-400 rounded-lg flex items-center justify-center">
-                                    ✅
+                            }
+                            @if (infologement()?.climatisation) {
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                                    <span class="text-xl">❄️</span> <span class="font-bold text-gray-700">Clim</span>
                                 </div>
-                                <span class="font-semibold text-gray-700">Jardin paysager</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
-                                    ✅
+                            }
+                            @if (infologement()?.piscine) {
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                                    <span class="text-xl">🏊</span> <span class="font-bold text-gray-700">Piscine</span>
                                 </div>
-                                <span class="font-semibold text-gray-700">Climatisation centrale</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-lg flex items-center justify-center">
-                                    ✅
+                            }
+                            @if (infologement()?.groupeElectrogene) {
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                                    <span class="text-xl">⚡</span> <span class="font-bold text-gray-700">Groupe</span>
                                 </div>
-                                <span class="font-semibold text-gray-700">Système domotique</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-red-400 to-pink-400 rounded-lg flex items-center justify-center">
-                                    ✅
+                            }
+                            @if (infologement()?.reservoirsEau) {
+                                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+                                    <span class="text-xl">💧</span> <span class="font-bold text-gray-700">Eau</span>
                                 </div>
-                                <span class="font-semibold text-gray-700">Sécurité 24/7</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-lg flex items-center justify-center">
-                                    ✅
-                                </div>
-                                <span class="font-semibold text-gray-700">Cuisine équipée</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-lg flex items-center justify-center">
-                                    ✅
-                                </div>
-                                <span class="font-semibold text-gray-700">Fibre optique</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all">
-                                <div class="w-10 h-10 bg-gradient-to-br from-teal-400 to-green-400 rounded-lg flex items-center justify-center">
-                                    ✅
-                                </div>
-                                <span class="font-semibold text-gray-700">Générateur électrique</span>
-                            </div>
+                            }
                         </div>
                     </div>
 
-                    <!-- Map -->
-                    <div class="bg-white rounded-3xl p-8 shadow-xl slide-in" style="animation-delay: 0.2s;">
-                        <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3">
-                            <span class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center text-xl">
-                                📍
-                            </span>
-                            Localisation
-                        </h2>
-                        <div class="relative h-96 bg-gray-200 rounded-2xl overflow-hidden">
-                            <img src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+3b82f6(-17.4676,14.7167)/zoom=13,pitch=0/1200x600@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" alt="Map" class="w-full h-full object-cover">
-                            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="font-bold text-gray-900">Almadies, Dakar</div>
-                                        <div class="text-sm text-gray-600">À 5 min de la plage</div>
-                                    </div>
-                                    <button class="px-4 py-2 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all">
-                                        Voir l'itinéraire
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Map Container -->
+                    <div class="bg-white rounded-3xl p-8 shadow-xl">
+                        <h2 class="text-2xl font-black text-gray-900 mb-6">Localisation</h2>
+                        <div id="map" class="h-96 rounded-2xl overflow-hidden shadow-inner border border-gray-100"></div>
                     </div>
                 </div>
 
@@ -345,106 +214,53 @@
                     <div class="sticky top-24 space-y-6">
                         
                         <!-- Contact Card -->
-                        <div class="bg-white rounded-3xl p-8 shadow-2xl border-2 border-blue-100 fade-in">
+                        <div class="bg-white rounded-3xl p-8 shadow-2xl border-2 border-blue-100">
                             <div class="text-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-xl">
+                                <div class="w-20 h-20 bg-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-xl text-white">
                                     👤
                                 </div>
-                                <h3 class="text-xl font-black text-gray-900 mb-1">Amadou Diop</h3>
-                                <p class="text-sm text-gray-600 font-semibold">Agent immobilier certifié</p>
-                                <div class="flex items-center justify-center gap-2 mt-2">
-                                    <div class="flex text-yellow-400">
-                                        ⭐⭐⭐⭐⭐
-                                    </div>
-                                    <span class="text-sm text-gray-600 font-bold">5.0 (127 avis)</span>
-                                </div>
+                                <h3 class="text-xl font-black text-gray-900 mb-1">Agent Samakeur</h3>
+                                <p class="text-sm text-gray-500 font-bold uppercase">Expert Immobilier</p>
                             </div>
 
                             <div class="space-y-3">
-                                <button class="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all hover:scale-105 flex items-center justify-center gap-2">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
-                                    Appeler maintenant
-                                </button>
+                                @if (infologement()?.telephone) {
+                                    <a [href]="'tel:' + infologement()?.telephone" class="block w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all hover:scale-[1.02] text-center">
+                                        Appeler maintenant
+                                    </a>
+                                } @else {
+                                    <button (click)="openContactForm()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all hover:scale-[1.02]">
+                                        Contacter l'agent
+                                    </button>
+                                }
 
-                                <button class="w-full py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                                    </svg>
+                                @if (infologement()?.whatsappNumber) {
+                                    <a [href]="'https://wa.me/' + infologement()?.whatsappNumber" target="_blank" class="w-full py-4 bg-[#25D366] text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
+                                        WhatsApp
+                                    </a>
+                                }
+
+                                <button (click)="openContactForm()" class="w-full py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-all">
                                     Envoyer un message
-                                </button>
-
-                                <button class="w-full py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    Planifier une visite
-                                </button>
-                            </div>
-
-                            <div class="mt-6 p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-200">
-                                <div class="flex items-center gap-3 text-sm text-gray-700">
-                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <span class="font-semibold">Réponse garantie en moins de 2h</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Calculator Card -->
-                        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 shadow-2xl text-white fade-in" style="animation-delay: 0.1s;">
-                            <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                                🧮 Calculateur de crédit
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-sm font-semibold mb-2 block">Apport initial</label>
-                                    <input type="range" min="0" max="500000" value="200000" class="w-full">
-                                    <div class="text-right font-bold mt-1">200,000 FCFA</div>
-                                </div>
-                                <div>
-                                    <label class="text-sm font-semibold mb-2 block">Durée (mois)</label>
-                                    <input type="range" min="12" max="60" value="36" class="w-full">
-                                    <div class="text-right font-bold mt-1">36 mois</div>
-                                </div>
-                                <div class="pt-4 border-t border-white/20">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm">Mensualité estimée</span>
-                                        <span class="text-2xl font-black">22,000 FCFA</span>
-                                    </div>
-                                </div>
-                                <button class="w-full py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-gray-100 transition-all">
-                                    Obtenir un financement
                                 </button>
                             </div>
                         </div>
 
                         <!-- Similar Properties -->
-                        <div class="bg-white rounded-3xl p-6 shadow-xl fade-in" style="animation-delay: 0.2s;">
-                            <h3 class="text-lg font-black text-gray-900 mb-4">Propriétés similaires</h3>
-                            <div class="space-y-3">
-                                <a href="#" class="block group">
-                                    <div class="flex gap-3">
-                                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&h=200&fit=crop" alt="Property" class="w-24 h-24 rounded-xl object-cover group-hover:scale-110 transition-transform">
-                                        <div class="flex-1">
-                                            <h4 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Villa Ouakam</h4>
-                                            <p class="text-sm text-gray-600">3 chambres • 250m²</p>
-                                            <p class="text-lg font-black text-blue-600">750,000 FCFA/mois</p>
+                        <div class="bg-white rounded-3xl p-6 shadow-xl">
+                            <h3 class="text-lg font-black text-gray-900 mb-4">Biens similaires</h3>
+                            <div class="space-y-4">
+                                @for (similaire of logementsSimilaires(); track similaire.id) {
+                                    <a [routerLink]="['/detail-logement', similaire.id]" class="flex gap-4 group">
+                                        <img [src]="similaire.images[0]" class="w-20 h-20 rounded-xl object-cover group-hover:scale-105 transition-transform">
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 group-hover:text-blue-600">{{ similaire.nom }}</h4>
+                                            <p class="text-xs text-gray-500 font-bold">{{ similaire.prix | number:'1.0-0' }} FCFA</p>
                                         </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="block group">
-                                    <div class="flex gap-3">
-                                        <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=200&h=200&fit=crop" alt="Property" class="w-24 h-24 rounded-xl object-cover group-hover:scale-110 transition-transform">
-                                        <div class="flex-1">
-                                            <h4 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Villa Ngor</h4>
-                                            <p class="text-sm text-gray-600">4 chambres • 300m²</p>
-                                            <p class="text-lg font-black text-blue-600">900,000 FCFA/mois</p>
-                                        </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                } @empty {
+                                    <p class="text-gray-400 italic text-center">Aucun bien similaire.</p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -453,59 +269,31 @@
         </div>
     </section>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <button class="absolute top-8 right-8 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all z-50">
-            ✕
-        </button>
-        <button class="absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all" onclick="event.stopPropagation(); prevImage()">
-            ←
-        </button>
-        <button class="absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all" onclick="event.stopPropagation(); nextImage()">
-            →
-        </button>
-        <img id="lightboxImage" src="" alt="Property Image" class="max-w-[90%] max-h-[90%] object-contain rounded-2xl shadow-2xl">
-    </div>
+    <!-- Contact Modal -->
+    @if (isContactModalOpen()) {
+        <div class="fixed inset-0 z-[120] flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" (click)="closeContactForm()"></div>
+            <div class="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden p-8">
+                @if (!isSent()) {
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-black text-gray-900">Contactez-nous</h3>
+                        <button (click)="closeContactForm()" class="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
+                    </div>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Votre nom" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="tel" placeholder="Votre téléphone" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <textarea rows="4" placeholder="Votre message" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        <button type="button" (click)="envoyerDemande()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg">Envoyer</button>
+                    </form>
+                } @else {
+                    <div class="text-center py-12">
+                        <div class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">✓</div>
+                        <h3 class="text-2xl font-black text-gray-900 mb-2">Message envoyé !</h3>
+                        <p class="text-gray-500">Nous vous répondrons très rapidement.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
-    <script>
-        const images = [
-            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&h=1200&fit=crop',
-            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&h=1200&fit=crop',
-            'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=1600&h=1200&fit=crop',
-            'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&h=1200&fit=crop',
-            'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&h=1200&fit=crop'
-        ];
-
-        let currentImageIndex = 0;
-
-        function openLightbox(index) {
-            currentImageIndex = index;
-            document.getElementById('lightbox').classList.add('active');
-            document.getElementById('lightboxImage').src = images[index];
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-        }
-
-        function nextImage() {
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            document.getElementById('lightboxImage').src = images[currentImageIndex];
-        }
-
-        function prevImage() {
-            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            document.getElementById('lightboxImage').src = images[currentImageIndex];
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (document.getElementById('lightbox').classList.contains('active')) {
-                if (e.key === 'Escape') closeLightbox();
-                if (e.key === 'ArrowRight') nextImage();
-                if (e.key === 'ArrowLeft') prevImage();
-            }
-        });
-    </script>
 </body>
-</html>

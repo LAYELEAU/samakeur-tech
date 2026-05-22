@@ -1,21 +1,117 @@
-<nav class="bg-white shadow-md py-4 px-8 flex justify-between items-center sticky top-0 z-50">
-  <div class="flex items-center space-x-2">
-    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">S</div>
-    <h1 class="text-xl font-extrabold text-gray-800 tracking-tighter">
-      SAMAKEUR <span class="text-blue-600">TECH</span>
-    </h1>
+<nav class="sticky top-0 z-[100] w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex justify-between items-center">
+    
+    <!-- Logo Section -->
+    <a routerLink="/" class="flex items-center gap-3 transition-transform active:scale-95 shrink-0">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-black text-xl sm:text-2xl shadow-lg shadow-blue-500/20">
+        S
+      </div>
+      <div class="flex flex-col">
+        <span class="text-lg sm:text-xl font-black text-gray-900 dark:text-white leading-none tracking-tight uppercase">SAMAKEUR</span>
+        <span class="text-[10px] sm:text-xs font-bold text-blue-600 leading-none">IMMOBILIER SÉNÉGAL</span>
+      </div>
+    </a>
+
+    <!-- Desktop Menu (Relevance Focus) -->
+    <div class="hidden lg:flex items-center gap-8">
+      <div class="flex items-center gap-6 font-bold text-[13px] uppercase tracking-wider text-gray-600 dark:text-gray-400">
+        <a routerLink="/" routerLinkActive="text-blue-600" [routerLinkActiveOptions]="{exact: true}" class="hover:text-blue-600 transition-colors">Trouver un bien</a>
+        <a routerLink="/dashboard" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Mes Annonces</a>
+        <a routerLink="/comment-ca-marche" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Comment ça marche ?</a>
+        <a routerLink="/aide-faq" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Aide & FAQ</a>
+      </div>
+
+      <div class="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+      <div class="flex items-center gap-4">
+        <!-- User Section -->
+        <ng-container *ngIf="authService.user(); else loginBtn">
+          <div class="flex items-center gap-3">
+            <img [src]="authService.user()?.user_metadata?.['avatar_url']" class="w-8 h-8 rounded-full border border-gray-200" *ngIf="authService.user()?.user_metadata?.['avatar_url']">
+            <button (click)="authService.logout()" class="text-[13px] font-bold text-red-500 hover:text-red-600 uppercase tracking-wider transition-colors">Déconnexion</button>
+          </div>
+        </ng-container>
+        <ng-template #loginBtn>
+          <a routerLink="/login" class="text-[13px] font-bold text-blue-600 hover:text-blue-700 uppercase tracking-wider transition-colors">Connexion</a>
+        </ng-template>
+
+        <!-- Theme Toggle -->
+        <button (click)="toggleDarkMode()" class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
+          <svg *ngIf="!isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          <svg *ngIf="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg>
+        </button>
+
+        <!-- CTA -->
+        <a routerLink="/ajouter-logement">
+          <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-bold text-[13px] uppercase tracking-widest hover:bg-blue-700 transition-all hover:scale-[1.02] shadow-lg shadow-blue-500/20">
+            Déposer une annonce
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div class="flex lg:hidden items-center gap-3">
+      <button (click)="toggleDarkMode()" class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-500">
+        <svg *ngIf="!isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        <svg *ngIf="isDarkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg>
+      </button>
+
+      <button (click)="toggleMobileMenu()" class="p-2.5 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30">
+        <svg *ngIf="!mobileMenuOpen()" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        <svg *ngIf="mobileMenuOpen()" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
   </div>
 
-  <div class="hidden md:flex space-x-8 font-medium text-gray-600">
-    <a href="#" class="hover:text-blue-600 transition">Accueil</a>
-    <a href="#" class="hover:text-blue-600 transition">Bureaux</a>
-    <a href="#" class="hover:text-blue-600 transition">Appartements</a>
-    <a href="#" class="hover:text-blue-600 transition">À propos</a>
-  </div>
+  <!-- Mobile Menu (Robust Implementation) -->
+  <div *ngIf="mobileMenuOpen()" class="fixed inset-0 z-[110] lg:hidden">
+    <!-- Backdrop with fade effect -->
+    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" (click)="closeMobileMenu()"></div>
+    
+    <!-- Sidebar Content -->
+    <div class="absolute top-0 right-0 w-[85%] max-w-sm h-full bg-white dark:bg-gray-900 shadow-2xl flex flex-col">
+      <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+        <span class="font-black text-blue-600 tracking-widest uppercase">Navigation</span>
+        <button (click)="closeMobileMenu()" class="p-2 text-gray-400">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
 
-  <div>
-    <button class="bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition shadow-md">
-      Déposer une annonce
-    </button>
+      <div class="flex-1 overflow-y-auto py-8 px-6 flex flex-col gap-6">
+        <a routerLink="/" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
+          <span class="w-8">🏠</span> Trouver un bien
+        </a>
+        <a routerLink="/dashboard" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
+          <span class="w-8">📊</span> Mes Annonces
+        </a>
+        <a routerLink="/comment-ca-marche" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
+          <span class="w-8">💡</span> Comment ça marche ?
+        </a>
+        <a routerLink="/aide-faq" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
+          <span class="w-8">❓</span> Aide & FAQ
+        </a>
+        
+        <div class="h-px bg-gray-100 dark:bg-gray-800 my-2"></div>
+
+        <ng-container *ngIf="authService.user(); else mobileLoginBtn">
+          <button (click)="authService.logout(); closeMobileMenu()" class="text-xl font-bold text-red-500 flex items-center gap-4">
+            <span class="w-8">🚪</span> Déconnexion
+          </button>
+        </ng-container>
+        <ng-template #mobileLoginBtn>
+          <a routerLink="/login" (click)="closeMobileMenu()" class="text-xl font-bold text-blue-600 flex items-center gap-4">
+            <span class="w-8">👤</span> Connexion
+          </a>
+        </ng-template>
+      </div>
+
+      <div class="p-6 bg-gray-50 dark:bg-gray-800/50 mt-auto">
+        <a routerLink="/ajouter-logement" (click)="closeMobileMenu()" class="block w-full py-4 bg-blue-600 text-white text-center rounded-2xl font-black text-lg shadow-xl shadow-blue-500/30">
+          DÉPOSER UNE ANNONCE
+        </a>
+        <p class="mt-6 text-center text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">SamakeurTech v1.0.0</p>
+      </div>
+    </div>
   </div>
 </nav>

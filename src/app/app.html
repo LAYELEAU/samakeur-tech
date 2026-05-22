@@ -1,3 +1,15 @@
 <app-navbar></app-navbar>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
+
+<!-- Toast Container -->
+<div class="fixed bottom-10 right-10 z-[100] flex flex-col gap-4">
+  @for (toast of notificationService.toasts(); track toast.id) {
+    <div [class]="toast.type === 'success' ? 'bg-green-600' : 'bg-blue-600'" 
+         class="px-6 py-4 rounded-2xl text-white font-bold shadow-2xl flex items-center gap-3 animate-in slide-in-from-right">
+      <span>{{toast.type === 'success' ? '✅' : 'ℹ️'}}</span>
+      {{toast.message}}
+      <button (click)="notificationService.remove(toast.id)" class="ml-4 opacity-70 hover:opacity-100">✕</button>
+    </div>
+  }
+</div>
