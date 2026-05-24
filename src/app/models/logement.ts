@@ -25,6 +25,7 @@ export interface Logement {
   chambres?: number;
   sallesDeBain?: number;
   surface?: number;
+  views?: number;
   
   // New fields for management and UX
   isVerified?: boolean;

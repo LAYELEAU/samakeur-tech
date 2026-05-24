@@ -78,11 +78,30 @@ export class LogementService {
     await this.fetchLogements();
   }
 
+  async incrementViewCount(id: string) {
+    const { data } = await this.supabase.client
+      .from('logements')
+      .select('views')
+      .eq('id', id)
+      .single();
+
+    const currentViews = data?.views || 0;
+
+    await this.supabase.client
+      .from('logements')
+      .update({ views: currentViews + 1 })
+      .eq('id', id);
+  }
+
   getById(id: string): Logement | undefined {
     return this.logements().find(l => String(l.id) === id);
   }
 
   getAll(): Logement[] {
     return this.logements();
+  }
+
+  getSupabaseClient() {
+    return this.supabase.client;
   }
 }

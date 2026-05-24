@@ -1,0 +1,133 @@
+<main class="bg-gray-50 min-h-screen pb-20">
+  <!-- Header / Search Section -->
+  <section class="bg-[#190487] pt-32 pb-20 px-6 relative overflow-hidden">
+    <!-- Abstract Decorations -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-400/10 rounded-full -mr-64 -mt-64 blur-[100px]"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-400/10 rounded-full -ml-64 -mb-64 blur-[100px]"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10 text-center mb-16">
+      <h1 class="text-5xl md:text-7xl font-black text-white mb-6">
+        Trouvez votre <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">bien idéal</span>
+      </h1>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto font-medium">
+        Explorez notre catalogue exclusif de logements vérifiés au Sénégal, organisés par catégorie pour une recherche simplifiée.
+      </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="bg-white/10 backdrop-blur-2xl rounded-[3rem] p-4 border border-white/20 shadow-2xl space-y-4">
+        <div class="grid lg:grid-cols-4 gap-4">
+          <!-- Location -->
+          <div class="relative group">
+            <span class="absolute left-6 top-1/2 -translate-y-1/2 text-xl">📍</span>
+            <input type="text" [ngModel]="searchQuartier()" (ngModelChange)="searchQuartier.set($event)" 
+              placeholder="Quartier ou ville..." 
+              class="w-full pl-16 pr-6 py-5 bg-white/10 rounded-[2rem] outline-none font-bold text-white placeholder-blue-200 border-2 border-transparent focus:border-blue-400/50 transition-all">
+          </div>
+          
+          <!-- Type -->
+          <div class="relative group">
+            <span class="absolute left-6 top-1/2 -translate-y-1/2 text-xl">🏠</span>
+            <select [ngModel]="searchType()" (ngModelChange)="searchType.set($event)" 
+              class="w-full pl-16 pr-10 py-5 bg-white/10 rounded-[2rem] outline-none font-bold text-white appearance-none cursor-pointer border-2 border-transparent focus:border-blue-400/50 transition-all">
+              <option value="Tout type" class="text-gray-900">Tout type</option>
+              <option value="Studio" class="text-gray-900">Studio</option>
+              <option value="Appartement" class="text-gray-900">Appartement</option>
+              <option value="Bureau" class="text-gray-900">Bureau</option>
+              <option value="Chambre" class="text-gray-900">Chambre</option>
+            </select>
+          </div>
+
+          <!-- Contract -->
+          <div class="relative group">
+            <span class="absolute left-6 top-1/2 -translate-y-1/2 text-xl">💰</span>
+            <select [ngModel]="searchContract()" (ngModelChange)="searchContract.set($event)" 
+              class="w-full pl-16 pr-10 py-5 bg-white/10 rounded-[2rem] outline-none font-bold text-white appearance-none cursor-pointer border-2 border-transparent focus:border-blue-400/50 transition-all">
+              <option value="Tous les contrats" class="text-gray-900">Tous les contrats</option>
+              <option value="location" class="text-gray-900">Location</option>
+              <option value="vente" class="text-gray-900">Vente</option>
+            </select>
+          </div>
+
+          <!-- Quick Filters -->
+          <div class="flex items-center justify-around bg-white/5 rounded-[2rem] px-4 py-2 border border-white/10">
+            <button (click)="filterWifi.set(!filterWifi())" [class.text-blue-300]="filterWifi()" [class.bg-white/10]="filterWifi()" class="p-2 rounded-xl transition-all hover:scale-110" title="WiFi">📶</button>
+            <button (click)="filterClim.set(!filterClim())" [class.text-blue-300]="filterClim()" [class.bg-white/10]="filterClim()" class="p-2 rounded-xl transition-all hover:scale-110" title="Climatisation">❄️</button>
+            <button (click)="filterParking.set(!filterParking())" [class.text-blue-300]="filterParking()" [class.bg-white/10]="filterParking()" class="p-2 rounded-xl transition-all hover:scale-110" title="Parking">🚗</button>
+          </div>
+        </div>
+
+        <!-- Price Range Row -->
+        <div class="grid lg:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="relative group">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-sm font-bold text-blue-200">MIN</span>
+                    <input type="number" [ngModel]="minPrice()" (ngModelChange)="minPrice.set($event)" 
+                        placeholder="Prix min" 
+                        class="w-full pl-16 pr-6 py-4 bg-white/10 rounded-[1.5rem] outline-none font-bold text-white placeholder-blue-200/50 border-2 border-transparent focus:border-blue-400/50 transition-all">
+                </div>
+                <div class="relative group">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-sm font-bold text-blue-200">MAX</span>
+                    <input type="number" [ngModel]="maxPrice()" (ngModelChange)="maxPrice.set($event)" 
+                        placeholder="Prix max" 
+                        class="w-full pl-16 pr-6 py-4 bg-white/10 rounded-[1.5rem] outline-none font-bold text-white placeholder-blue-200/50 border-2 border-transparent focus:border-blue-400/50 transition-all">
+                </div>
+            </div>
+            <div class="flex items-center justify-end">
+                <button (click)="searchQuartier.set(''); searchType.set('Tout type'); searchContract.set('Tous les contrats'); minPrice.set(null); maxPrice.set(null); filterWifi.set(false); filterClim.set(false); filterParking.set(false)" 
+                    class="px-8 py-4 text-blue-200 font-bold hover:text-white transition-colors flex items-center gap-2">
+                    <span>🔄</span> Réinitialiser tous les filtres
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grouped Results -->
+  <section class="max-w-7xl mx-auto px-6 py-20 space-y-24">
+    @if (logementService.isLoading()) {
+      <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-12">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <app-skeleton-card></app-skeleton-card>
+        }
+      </div>
+    } @else {
+      @for (category of categoryOrder; track category) {
+        @if (groupedLogements()[category].length > 0) {
+          <div class="space-y-10">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-blue-500/20">
+                {{getCategoryIcon(category)}}
+              </div>
+              <div>
+                <h2 class="text-4xl font-black text-gray-900">{{category}}s</h2>
+                <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">{{groupedLogements()[category].length}} biens disponibles</p>
+              </div>
+              <div class="flex-1 h-px bg-gray-200 ml-8"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-12">
+              @for (logement of groupedLogements()[category]; track logement.id) {
+                <app-card-logement [infologement]="logement" class="animate-in fade-in slide-in-from-bottom duration-700"></app-card-logement>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Empty State -->
+      @if (filteredLogements().length === 0) {
+        <div class="py-40 text-center bg-white rounded-[4rem] border-4 border-dashed border-gray-100">
+          <div class="text-8xl mb-8">🔍</div>
+          <h3 class="text-4xl font-black text-gray-900 mb-4">Aucun résultat trouvé</h3>
+          <p class="text-gray-500 text-xl max-w-lg mx-auto font-medium">Essayez de modifier vos critères de recherche pour voir plus de biens.</p>
+          <button (click)="searchQuartier.set(''); searchType.set('Tout type'); filterWifi.set(false); filterClim.set(false); filterParking.set(false)" class="mt-10 px-12 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-2xl shadow-blue-600/20">
+            🔄 Réinitialiser
+          </button>
+        </div>
+      }
+    }
+  </section>
+</main>

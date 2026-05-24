@@ -4,7 +4,7 @@ import { CardLogement } from '../card-logement/card-logement';
 import { SkeletonCard } from '../skeleton-card/skeleton-card';
 import { Logement } from '../../models/logement';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { LogementService } from '../../services/logement.service';
 
 @Component({
@@ -17,6 +17,7 @@ import { LogementService } from '../../services/logement.service';
 export class Home implements AfterViewInit, OnDestroy {
   public logementService = inject(LogementService);
   private renderer = inject(Renderer2);
+  private router = inject(Router);
 
   searchQuartier = signal('');
   searchType = signal('Type de logement');
@@ -52,14 +53,19 @@ export class Home implements AfterViewInit, OnDestroy {
   logements = this.logementService.logements;
 
   scrollToResults() {
-    if (this.resultsSection) {
-      this.resultsSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    this.router.navigate(['/trouver-un-bien'], {
+      queryParams: {
+        quartier: this.searchQuartier(),
+        type: this.searchType() === 'Type de logement' ? 'Tout type' : this.searchType(),
+        contract: this.searchContract()
+      }
+    });
   }
 
   selectCategory(categoryName: string) {
-    this.searchType.set(categoryName);
-    setTimeout(() => this.scrollToResults(), 100);
+    this.router.navigate(['/trouver-un-bien'], {
+      queryParams: { type: categoryName }
+    });
   }
 
   filteredLogements = computed(() => {

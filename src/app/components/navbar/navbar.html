@@ -15,7 +15,7 @@
     <!-- Desktop Menu (Relevance Focus) -->
     <div class="hidden lg:flex items-center gap-8">
       <div class="flex items-center gap-6 font-bold text-[13px] uppercase tracking-wider text-gray-600 dark:text-gray-400">
-        <a routerLink="/" routerLinkActive="text-blue-600" [routerLinkActiveOptions]="{exact: true}" class="hover:text-blue-600 transition-colors">Trouver un bien</a>
+        <a routerLink="/trouver-un-bien" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Trouver un bien</a>
         <a routerLink="/dashboard" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Mes Annonces</a>
         <a routerLink="/comment-ca-marche" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Comment ça marche ?</a>
         <a routerLink="/aide-faq" routerLinkActive="text-blue-600" class="hover:text-blue-600 transition-colors">Aide & FAQ</a>
@@ -79,7 +79,7 @@
       </div>
 
       <div class="flex-1 overflow-y-auto py-8 px-6 flex flex-col gap-6">
-        <a routerLink="/" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
+        <a routerLink="/trouver-un-bien" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">
           <span class="w-8">🏠</span> Trouver un bien
         </a>
         <a routerLink="/dashboard" (click)="closeMobileMenu()" class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-4">

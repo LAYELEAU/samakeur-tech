@@ -43,12 +43,28 @@ export class DetailLogement implements OnInit, AfterViewInit {
     return images.length > 0 ? images : fallbacks;
   });
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+  async ngOnInit(): Promise<void> {
+    this.route.paramMap.subscribe(async (params) => {
       const id = params.get('id');
       if (id) {
-        const logement = this.logementService.getById(id);
+        // Attempt to get from signal first
+        let logement = this.logementService.getById(id);
+        
+        // If not in signal (e.g., refresh), fetch individually from Supabase
+        if (!logement) {
+          const { data, error } = await this.logementService.getSupabaseClient()
+            .from('logements')
+            .select('*')
+            .eq('id', id)
+            .single();
+            
+          if (!error && data) {
+            logement = data as Logement;
+          }
+        }
+        
         this.infologement.set(logement ?? null);
+        this.logementService.incrementViewCount(id);
         window.scrollTo(0, 0);
       }
     });
